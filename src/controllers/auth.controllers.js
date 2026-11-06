@@ -1,7 +1,7 @@
 const userModel = require("../models/user.model")
 const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
-
+const blacklistTokenModel = require("../models/blacklist.model")    
 
 /**4
  * @name registerUserController
@@ -82,10 +82,77 @@ async function loginUserController(req, res) {
         }
     })
 }
+/**
+ * @name logoutUserController
+ * @description Controller to handle user logout, clears the token from the user's cookies and adds the token to the blacklist
+ * @access Public       
+ */
+async function logoutUserController(req, res) {
+    try {
+        const token = req.cookies?.token
+
+        if (!token) {
+            return res.status(401).json({
+                message: "No authentication token found"
+            })
+        }
+
+        await blacklistTokenModel.create({ token })
+
+        res.clearCookie("token")
+
+        return res.status(200).json({
+            message: "User logged out successfully"
+        })
+
+    } catch (error) {
+        return res.status(500).json({
+            message: "Logout failed",
+            error: error.message
+        })
+    }
+}
+
+
+/**
+ * @name getMeController
+ * @description get the current logged-in user's details
+ * @access Private
+ */
+async function getMeController(req, res) {
+    try {
+
+        const user = await userModel.findById(req.user.userId);
+
+        if (!user) {
+            return res.status(404).json({
+                message: "User not found"
+            });
+        }
+
+        return res.status(200).json({
+            message: "User retrieved successfully",
+            user: {
+                userId: user._id,
+                username: user.username,
+                email: user.email
+            }
+        });
+
+    } catch (error) {
+        return res.status(500).json({
+            message: "Failed to retrieve user",
+            error: error.message
+        });
+    }
+}
+
 
  
 
 module.exports = {
     registerUserController,
-    loginUserController
- }
+    loginUserController,
+    logoutUserController,
+    getMeController
+}
