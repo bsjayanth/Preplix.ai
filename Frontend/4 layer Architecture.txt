@@ -1,0 +1,16 @@
+4 Layer Architecture In frontend
+
+UI
+=>Component folder
+=>pages folder
+
+Hook = For managing state and API layers
+=>hooks folder
+
+State=Majorly for User data handling
+=>auth.context.jsx
+=>ai.conytext.jsx
+
+API=For communication with backend
+=>services folder
+  =>auth.api.js
