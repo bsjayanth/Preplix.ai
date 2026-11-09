@@ -3,9 +3,11 @@ import { useState } from 'react'
 import { Link } from 'react-router'
 import '../auth.form.scss'
 import { useAuth } from '../hooks/useAuth'
+import { useNavigate } from 'react-router'
 
 const Login = () => {
   const { loading, handleLogin } = useAuth()
+  const navigate = useNavigate()
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -15,9 +17,11 @@ const Login = () => {
 
     try {
       await handleLogin({ email, password })
+     
     } catch (error) {
       console.error('Login failed:', error)
     }
+     navigate('/')
   }
 
   if (loading) {
