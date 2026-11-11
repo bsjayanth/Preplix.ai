@@ -1,9 +1,9 @@
+
 @use "./styles/buttons.scss";
 
-
 * {
-    margin: 0%;
-    padding: 0%; 
+    margin: 0;
+    padding: 0;
     box-sizing: border-box;
 }
 
@@ -11,6 +11,175 @@ html,
 body,
 #root {
     width: 100%;
+    min-height: 100%;
     background-color: #161616;
-    color: whitesmoke
+    color: whitesmoke;
+}
+
+/* Application startup loading screen */
+
+.app-loading {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 100vh;
+    width: 100%;
+    padding: 24px;
+
+    background: #f5f5f7;
+    color: #1d1d1f;
+
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "SF Pro Display",
+        "SF Pro Text",
+        "Helvetica Neue",
+        Arial,
+        sans-serif;
+
+    animation: app-loading-appear 0.3s ease;
+}
+
+.app-loading-content {
+    width: 100%;
+    max-width: 380px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    padding: 42px 30px;
+
+    background: #ffffff;
+    border: 1px solid #e8e8ed;
+    border-radius: 24px;
+
+    text-align: center;
+
+    box-shadow: 0 12px 45px rgba(0, 0, 0, 0.045);
+}
+
+.app-loading-brand {
+    margin-bottom: 36px;
+
+    color: #1d1d1f;
+    font-size: 23px;
+    font-weight: 750;
+    letter-spacing: -1.2px;
+
+    span {
+        color: #86868b;
+        font-weight: 500;
+    }
+}
+
+.app-loading-spinner {
+    width: 38px;
+    height: 38px;
+
+    margin-bottom: 25px;
+
+    border: 3px solid #e8e8ed;
+    border-top-color: #1d1d1f;
+
+    border-radius: 50%;
+
+    animation: app-loading-spin 0.8s linear infinite;
+}
+
+.app-loading-content h2 {
+    margin: 0 0 9px;
+
+    color: #1d1d1f;
+    font-size: 19px;
+    font-weight: 650;
+    letter-spacing: -0.5px;
+}
+
+.app-loading-content p {
+    margin: 0;
+
+    color: #86868b;
+    font-size: 13px;
+    line-height: 1.7;
+}
+
+.app-loading-progress {
+    width: 100%;
+    height: 3px;
+
+    margin-top: 30px;
+
+    overflow: hidden;
+
+    background: #eeeeef;
+    border-radius: 10px;
+
+    span {
+        display: block;
+        width: 35%;
+        height: 100%;
+
+        background: #1d1d1f;
+        border-radius: inherit;
+
+        animation: app-loading-progress 1.5s ease-in-out infinite;
+    }
+}
+
+.app-loading-footer {
+    position: absolute;
+    bottom: 32px;
+
+    color: #a1a1a6;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+/* Loading animations */
+
+@keyframes app-loading-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes app-loading-progress {
+    0% {
+        transform: translateX(-110%);
+    }
+
+    100% {
+        transform: translateX(300%);
+    }
+}
+
+@keyframes app-loading-appear {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+/* Mobile responsiveness */
+
+@media (max-width: 480px) {
+    .app-loading-content {
+        padding: 36px 24px;
+        border-radius: 20px;
+    }
+
+    .app-loading-content h2 {
+        font-size: 17px;
+    }
 }
