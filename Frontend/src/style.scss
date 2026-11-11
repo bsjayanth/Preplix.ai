@@ -1,19 +1,301 @@
 
 @use "./styles/buttons.scss";
 
+/* Global reset */
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+/* Global typography */
+
 html,
 body,
 #root {
     width: 100%;
     min-height: 100%;
-    background-color: #161616;
-    color: whitesmoke;
+
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "SF Pro Display",
+        "SF Pro Text",
+        "Helvetica Neue",
+        Arial,
+        sans-serif;
+
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+button,
+input,
+textarea,
+select {
+    font: inherit;
+}
+
+/* Application theme variables */
+
+:root {
+    color-scheme: light;
+
+    --app-background: #f5f5f7;
+    --surface-background: #ffffff;
+    --primary-text: #1d1d1f;
+    --secondary-text: #6e6e73;
+    --muted-text: #86868b;
+    --border-color: #e5e5e7;
+    --input-background: #fafafa;
+    --sidebar-background: #ffffff;
+    --accent-background: #1d1d1f;
+    --accent-text: #ffffff;
+}
+
+:root[data-theme="light"] {
+    color-scheme: light;
+
+    --app-background: #f5f5f7;
+    --surface-background: #ffffff;
+    --primary-text: #1d1d1f;
+    --secondary-text: #6e6e73;
+    --muted-text: #86868b;
+    --border-color: #e5e5e7;
+    --input-background: #fafafa;
+    --sidebar-background: #ffffff;
+    --accent-background: #1d1d1f;
+    --accent-text: #ffffff;
+}
+
+:root[data-theme="dark"] {
+    color-scheme: dark;
+
+    --app-background: #171719;
+    --surface-background: #242426;
+    --primary-text: #f5f5f7;
+    --secondary-text: #b5b5ba;
+    --muted-text: #929298;
+    --border-color: #39393d;
+    --input-background: #2b2b2e;
+    --sidebar-background: #202022;
+    --accent-background: #f5f5f7;
+    --accent-text: #1d1d1f;
+}
+
+:root[data-theme="system"] {
+    color-scheme: light;
+}
+
+/* System theme */
+
+@media (prefers-color-scheme: dark) {
+    :root[data-theme="system"] {
+        color-scheme: dark;
+
+        --app-background: #171719;
+        --surface-background: #242426;
+        --primary-text: #f5f5f7;
+        --secondary-text: #b5b5ba;
+        --muted-text: #929298;
+        --border-color: #39393d;
+        --input-background: #2b2b2e;
+        --sidebar-background: #202022;
+        --accent-background: #f5f5f7;
+        --accent-text: #1d1d1f;
+    }
+}
+
+/* Global application styling */
+
+html,
+body,
+#root {
+    background: var(--app-background);
+    color: var(--primary-text);
+}
+
+body {
+    transition:
+        background-color 0.2s ease,
+        color 0.2s ease;
+}
+
+/* Homepage dark theme */
+
+:root[data-theme="dark"] .home {
+    background: var(--app-background);
+    color: var(--primary-text);
+}
+
+:root[data-theme="dark"] .home .input-card {
+    background: var(--surface-background);
+    border-color: var(--border-color);
+}
+
+:root[data-theme="dark"] .home .brand-name,
+:root[data-theme="dark"] .home .brand-tagline,
+:root[data-theme="dark"] .home .card-heading h2,
+:root[data-theme="dark"] .home .input-group label {
+    color: var(--primary-text);
+}
+
+:root[data-theme="dark"] .home .header-description,
+:root[data-theme="dark"] .home .card-heading p,
+:root[data-theme="dark"] .home .input-caption,
+:root[data-theme="dark"] .home .privacy-note,
+:root[data-theme="dark"] .home .home-footer span {
+    color: var(--secondary-text);
+}
+
+:root[data-theme="dark"] .home .input-card textarea,
+:root[data-theme="dark"] .home .upload-area,
+:root[data-theme="dark"] .home .form-hint {
+    background: var(--input-background);
+    border-color: var(--border-color);
+    color: var(--primary-text);
+}
+
+:root[data-theme="dark"] .home .input-card textarea::placeholder {
+    color: var(--muted-text);
+}
+
+:root[data-theme="dark"] .home .heading-icon,
+:root[data-theme="dark"] .home .upload-icon {
+    background: #38383c;
+    color: var(--primary-text);
+}
+
+:root[data-theme="dark"] .home .form-hint p {
+    color: var(--secondary-text);
+}
+
+:root[data-theme="dark"] .home .generate-btn {
+    background: #f5f5f7;
+    color: #1d1d1f;
+
+    &:hover:not(:disabled) {
+        background: #dcdce0;
+    }
+}
+
+/* System theme homepage */
+
+@media (prefers-color-scheme: dark) {
+    :root[data-theme="system"] .home {
+        background: var(--app-background);
+        color: var(--primary-text);
+    }
+
+    :root[data-theme="system"] .home .input-card {
+        background: var(--surface-background);
+        border-color: var(--border-color);
+    }
+
+    :root[data-theme="system"] .home .brand-name,
+    :root[data-theme="system"] .home .brand-tagline,
+    :root[data-theme="system"] .home .card-heading h2,
+    :root[data-theme="system"] .home .input-group label {
+        color: var(--primary-text);
+    }
+
+    :root[data-theme="system"] .home .header-description,
+    :root[data-theme="system"] .home .card-heading p,
+    :root[data-theme="system"] .home .input-caption,
+    :root[data-theme="system"] .home .privacy-note,
+    :root[data-theme="system"] .home .home-footer span {
+        color: var(--secondary-text);
+    }
+
+    :root[data-theme="system"] .home .input-card textarea,
+    :root[data-theme="system"] .home .upload-area,
+    :root[data-theme="system"] .home .form-hint {
+        background: var(--input-background);
+        border-color: var(--border-color);
+        color: var(--primary-text);
+    }
+
+    :root[data-theme="system"] .home .input-card textarea::placeholder {
+        color: var(--muted-text);
+    }
+
+    :root[data-theme="system"] .home .heading-icon,
+    :root[data-theme="system"] .home .upload-icon {
+        background: #38383c;
+        color: var(--primary-text);
+    }
+
+    :root[data-theme="system"] .home .form-hint p {
+        color: var(--secondary-text);
+    }
+
+    :root[data-theme="system"] .home .generate-btn {
+        background: #f5f5f7;
+        color: #1d1d1f;
+
+        &:hover:not(:disabled) {
+            background: #dcdce0;
+        }
+    }
+}
+
+/* Report generation overlay */
+
+:root[data-theme="dark"] .generation-overlay {
+    background: rgba(15, 15, 17, 0.82);
+}
+
+:root[data-theme="dark"] .generation-card {
+    background: var(--surface-background);
+    border-color: var(--border-color);
+}
+
+:root[data-theme="dark"] .generation-card h2 {
+    color: var(--primary-text);
+}
+
+:root[data-theme="dark"] .generation-card p {
+    color: var(--secondary-text);
+}
+
+:root[data-theme="dark"] .generation-spinner {
+    border-color: var(--border-color);
+    border-top-color: var(--primary-text);
+}
+
+:root[data-theme="dark"] .generation-progress {
+    background: var(--border-color);
+}
+
+@media (prefers-color-scheme: dark) {
+    :root[data-theme="system"] .generation-overlay {
+        background: rgba(15, 15, 17, 0.82);
+    }
+
+    :root[data-theme="system"] .generation-card {
+        background: var(--surface-background);
+        border-color: var(--border-color);
+    }
+
+    :root[data-theme="system"] .generation-card h2 {
+        color: var(--primary-text);
+    }
+
+    :root[data-theme="system"] .generation-card p {
+        color: var(--secondary-text);
+    }
+
+    :root[data-theme="system"] .generation-spinner {
+        border-color: var(--border-color);
+        border-top-color: var(--primary-text);
+    }
+
+    :root[data-theme="system"] .generation-progress {
+        background: var(--border-color);
+    }
 }
 
 /* Application startup loading screen */
@@ -34,14 +316,7 @@ body,
     background: #f5f5f7;
     color: #1d1d1f;
 
-    font-family:
-        -apple-system,
-        BlinkMacSystemFont,
-        "SF Pro Display",
-        "SF Pro Text",
-        "Helvetica Neue",
-        Arial,
-        sans-serif;
+    font-family: inherit;
 
     animation: app-loading-appear 0.3s ease;
 }

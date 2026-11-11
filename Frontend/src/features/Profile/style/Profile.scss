@@ -1,0 +1,176 @@
+
+/* Profile page */
+
+.profile-page {
+    min-height: 100vh;
+    width: 100%;
+    padding: 55px clamp(20px, 5vw, 65px);
+
+    background: var(--app-background);
+    color: var(--primary-text);
+
+    font-family: inherit;
+    -webkit-font-smoothing: antialiased;
+
+    * {
+        font-family: inherit;
+    }
+}
+
+/* Page heading */
+
+.profile-page-header {
+    margin-bottom: 35px;
+    padding-bottom: 30px;
+
+    border-bottom: 1px solid var(--border-color);
+
+    h1 {
+        margin: 0;
+
+        color: var(--primary-text);
+
+        font-size: clamp(27px, 4vw, 36px);
+        font-weight: 700;
+        letter-spacing: -1.3px;
+        line-height: 1.2;
+    }
+
+    p {
+        margin-top: 10px;
+
+        color: var(--secondary-text);
+
+        font-size: 13px;
+        font-weight: 400;
+        line-height: 1.7;
+    }
+}
+
+.profile-eyebrow {
+    display: block;
+    margin-bottom: 12px;
+
+    color: var(--muted-text);
+
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.8px;
+}
+
+/* Profile information card */
+
+.profile-card {
+    width: 100%;
+    max-width: 650px;
+
+    padding: 35px;
+
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+
+    background: var(--surface-background);
+}
+
+/* User avatar */
+
+.profile-avatar {
+    width: 65px;
+    height: 65px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: var(--input-background);
+    color: var(--primary-text);
+
+    font-size: 25px;
+    font-weight: 700;
+}
+
+/* User identity */
+
+.profile-identity {
+    margin-top: 17px;
+
+    h2 {
+        color: var(--primary-text);
+
+        font-size: 20px;
+        font-weight: 650;
+        letter-spacing: -0.5px;
+        line-height: 1.3;
+    }
+
+    p {
+        margin-top: 5px;
+
+        color: var(--secondary-text);
+
+        font-size: 13px;
+        font-weight: 400;
+        line-height: 1.6;
+    }
+}
+
+/* Divider */
+
+.profile-divider {
+    height: 1px;
+    margin: 28px 0;
+
+    background: var(--border-color);
+}
+
+/* Profile details */
+
+.profile-detail {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+
+    margin-bottom: 23px;
+
+    span {
+        color: var(--muted-text);
+
+        font-size: 11px;
+        font-weight: 500;
+    }
+
+    strong {
+        color: var(--primary-text);
+
+        font-size: 13px;
+        font-weight: 600;
+        line-height: 1.5;
+
+        overflow-wrap: anywhere;
+    }
+}
+
+/* Account status */
+
+.profile-status {
+    color: #299764 !important;
+}
+
+/* Mobile responsiveness */
+
+@media (max-width: 480px) {
+    .profile-page {
+        padding: 35px 18px;
+    }
+
+    .profile-card {
+        padding: 25px 20px;
+        border-radius: 17px;
+    }
+
+    .profile-page-header {
+        margin-bottom: 25px;
+    }
+}

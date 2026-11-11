@@ -1,7 +1,6 @@
 
 import { useCallback, useContext } from "react";
 import { InterviewContext } from "../interview.context";
-
 import {
     getAllInterviewReports,
     generateInterviewReport,
@@ -9,18 +8,22 @@ import {
 } from "../services/interview.api";
 
 /**
- * @description Custom hook to access interview report state and perform interview-related operations.
+ * @description Provides interview report operations and shared state.
  */
 export const useInterview = () => {
     const context = useContext(InterviewContext);
 
     if (!context) {
-        throw new Error("useInterview must be used within an InterviewProvider");
+        throw new Error(
+            "useInterview must be used within an InterviewProvider"
+        );
     }
 
     const {
         loading,
         setLoading,
+        reportsLoading,
+        setReportsLoading,
         report,
         setReport,
         reports,
@@ -28,9 +31,9 @@ export const useInterview = () => {
     } = context;
 
     /**
-     * @description Generates a new interview report using the user's resume, self-description and job description.
+     * @description Generates a new interview report.
      */
-    const generateReport = async ({
+    const generateReport = useCallback(async ({
         jobDescription,
         selfDescription,
         resumeFile
@@ -50,10 +53,10 @@ export const useInterview = () => {
         } finally {
             setLoading(false);
         }
-    };
+    }, [setLoading, setReport]);
 
     /**
-     * @description Fetches a specific interview report using its ID.
+     * @description Fetches an individual interview report by its ID.
      */
     const fetchReportById = useCallback(async (interviewId) => {
         setLoading(true);
@@ -70,24 +73,25 @@ export const useInterview = () => {
     }, [setLoading, setReport]);
 
     /**
-     * @description Fetches all interview reports belonging to the logged-in user.
+     * @description Fetches all interview reports belonging to the user.
      */
-    const fetchAllReports = async () => {
-        setLoading(true);
+    const fetchAllReports = useCallback(async () => {
+        setReportsLoading(true);
 
         try {
             const response = await getAllInterviewReports();
 
-            setReports(response.interviewReports);
+            setReports(response.interviewReports || []);
 
             return response;
         } finally {
-            setLoading(false);
+            setReportsLoading(false);
         }
-    };
+    }, [setReportsLoading, setReports]);
 
     return {
         loading,
+        reportsLoading,
         report,
         reports,
         generateReport,
