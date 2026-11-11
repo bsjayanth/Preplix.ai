@@ -4,11 +4,7 @@ require("dotenv").config();
 const app = require("./src/app");
 const connectToDB = require("./src/config/database");
 
-
-// ============================================================
-// START SERVER
-// ============================================================
-
+//START SERVER
 async function startServer() {
     try {
 
