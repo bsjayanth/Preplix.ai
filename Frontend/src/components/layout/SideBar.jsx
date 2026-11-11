@@ -3,7 +3,7 @@ import { useState } from "react";
 import { NavLink, useNavigate } from "react-router";
 import { useAuth } from "../../features/auth/hooks/useAuth";
 import { useTheme } from "../../context/ThemeContext";
-import "./Sidebar.scss";
+import "./SideBar.scss";
 
 /**
  * @description Displays application navigation, account information,
