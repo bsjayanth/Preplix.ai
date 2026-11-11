@@ -27,16 +27,12 @@
   margin: 0 auto;
 }
 
-// ========================================
 // BRAND HEADER
-// ========================================
 
 .home-header {
   text-align: center;
   max-width: 760px;
   margin: 0 auto 65px;
-
-  // BRAND NAME
 
   .brand-name {
     font-size: 23px;
@@ -51,8 +47,6 @@
     }
   }
 
-  // TAGLINE
-
   .brand-tagline {
     font-size: clamp(42px, 6vw, 68px);
     line-height: 1.08;
@@ -65,8 +59,6 @@
     }
   }
 
-  // DESCRIPTION
-
   .header-description {
     max-width: 550px;
     margin: 25px auto 0;
@@ -75,8 +67,6 @@
     color: #6e6e73;
     font-weight: 400;
   }
-
-  // BRAND CAPTION
 
   .brand-caption {
     display: inline-block;
@@ -88,9 +78,7 @@
   }
 }
 
-// ========================================
 // MAIN FORM LAYOUT
-// ========================================
 
 .interview-input-group {
   display: grid;
@@ -99,9 +87,7 @@
   align-items: stretch;
 }
 
-// ========================================
 // INPUT CARDS
-// ========================================
 
 .input-card {
   background: #ffffff;
@@ -118,9 +104,7 @@
   }
 }
 
-// ========================================
 // CARD HEADINGS
-// ========================================
 
 .card-heading {
   display: flex;
@@ -163,9 +147,7 @@
   }
 }
 
-// ========================================
 // INPUT GROUPS
-// ========================================
 
 .input-group {
   margin-bottom: 25px;
@@ -179,9 +161,7 @@
   }
 }
 
-// ========================================
 // TEXTAREAS
-// ========================================
 
 .input-card textarea {
   display: block;
@@ -228,9 +208,7 @@
   line-height: 1.5;
 }
 
-// ========================================
 // RESUME UPLOAD
-// ========================================
 
 .upload-area {
   position: relative;
@@ -300,9 +278,7 @@
   }
 }
 
-// ========================================
 // SELF DESCRIPTION
-// ========================================
 
 .self-description-group {
   margin-top: 27px;
@@ -312,9 +288,7 @@
   }
 }
 
-// ========================================
 // INFORMATION HINT
-// ========================================
 
 .form-hint {
   display: flex;
@@ -341,9 +315,20 @@
   }
 }
 
-// ========================================
+// ERROR MESSAGE
+
+.form-error {
+  margin: 0 0 18px;
+  padding: 12px 14px;
+  border: 1px solid #f5ddda;
+  border-radius: 10px;
+  background: #fff3f2;
+  color: #bd5550;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
 // GENERATE BUTTON
-// ========================================
 
 .generate-btn {
   width: 100%;
@@ -375,7 +360,7 @@
     transition: transform 0.25s ease;
   }
 
-  &:hover {
+  &:hover:not(:disabled) {
     background: #424245;
     transform: translateY(-2px);
 
@@ -384,14 +369,17 @@
     }
   }
 
-  &:active {
+  &:active:not(:disabled) {
     transform: scale(0.98);
+  }
+
+  &:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
   }
 }
 
-// ========================================
 // PRIVACY NOTE
-// ========================================
 
 .privacy-note {
   text-align: center;
@@ -400,9 +388,7 @@
   margin: 17px 0 0;
 }
 
-// ========================================
 // FOOTER
-// ========================================
 
 .home-footer {
   text-align: center;
@@ -415,12 +401,168 @@
   }
 }
 
-// ========================================
+// REPORT GENERATION LOADING OVERLAY
+
+.generation-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 24px;
+
+  background: rgba(245, 245, 247, 0.82);
+
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+
+  animation: overlay-appear 0.25s ease;
+}
+
+.generation-card {
+  width: 100%;
+  max-width: 440px;
+
+  padding: 42px 36px;
+
+  border: 1px solid #e8e8ed;
+  border-radius: 24px;
+
+  background: #ffffff;
+
+  text-align: center;
+
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+
+  animation: card-appear 0.35s ease;
+}
+
+.generation-spinner {
+  width: 54px;
+  height: 54px;
+
+  margin: 0 auto 26px;
+
+  border: 3px solid #e8e8ed;
+  border-top-color: #1d1d1f;
+
+  border-radius: 50%;
+
+  animation: generation-spin 0.85s linear infinite;
+}
+
+.generation-eyebrow {
+  display: block;
+  margin-bottom: 12px;
+
+  color: #86868b;
+
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+
+.generation-card h2 {
+  margin: 0 0 12px;
+
+  color: #1d1d1f;
+
+  font-size: 21px;
+  font-weight: 650;
+  letter-spacing: -0.6px;
+}
+
+.generation-card p {
+  max-width: 330px;
+
+  margin: 0 auto;
+
+  color: #6e6e73;
+
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.generation-progress {
+  width: 100%;
+  height: 4px;
+
+  margin: 28px 0 18px;
+
+  overflow: hidden;
+
+  border-radius: 10px;
+
+  background: #eeeeef;
+
+  span {
+    display: block;
+    width: 35%;
+    height: 100%;
+
+    border-radius: inherit;
+
+    background: #1d1d1f;
+
+    animation: generation-progress 1.6s ease-in-out infinite;
+  }
+}
+
+.generation-note {
+  display: block;
+
+  color: #a1a1a6;
+
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+// LOADING ANIMATIONS
+
+@keyframes generation-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes generation-progress {
+  0% {
+    transform: translateX(-110%);
+  }
+
+  100% {
+    transform: translateX(300%);
+  }
+}
+
+@keyframes overlay-appear {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes card-appear {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 // TABLET RESPONSIVENESS
-// ========================================
 
 @media (max-width: 850px) {
-
   .home {
     padding: 65px 20px 35px;
   }
@@ -440,12 +582,9 @@
   }
 }
 
-// ========================================
 // MOBILE RESPONSIVENESS
-// ========================================
 
 @media (max-width: 480px) {
-
   .home {
     padding: 48px 15px 30px;
   }
@@ -505,5 +644,14 @@
 
   .generate-btn {
     font-size: 13px;
+  }
+
+  .generation-card {
+    padding: 36px 24px;
+    border-radius: 20px;
+  }
+
+  .generation-card h2 {
+    font-size: 19px;
   }
 }
