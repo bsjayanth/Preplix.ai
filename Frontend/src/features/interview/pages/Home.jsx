@@ -36,8 +36,8 @@ const Home = () => {
             return;
         }
 
-        if (file.size > 5 * 1024 * 1024) {
-            setError("Resume size should not exceed 5 MB.");
+        if (file.size > 3 * 1024 * 1024) {
+            setError("Resume size should not exceed 3 MB.");
             setResumeFile(null);
             event.target.value = "";
             return;
@@ -212,7 +212,7 @@ const Home = () => {
                                         </strong>
 
                                         <span>
-                                            PDF format · Maximum 5 MB
+                                            PDF format · Maximum 3 MB
                                         </span>
                                     </div>
                                 </label>
