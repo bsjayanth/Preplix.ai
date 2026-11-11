@@ -4,8 +4,13 @@ import { useNavigate } from "react-router";
 import { useInterview } from "../hooks/useInterview";
 import "../style/home.scss";
 
+/**
+ * @description Displays the interview preparation form and handles
+ * AI-powered interview report generation.
+ */
 const Home = () => {
     const navigate = useNavigate();
+
     const { generateReport, loading } = useInterview();
 
     const [jobDescription, setJobDescription] = useState("");
@@ -14,10 +19,10 @@ const Home = () => {
     const [error, setError] = useState("");
 
     /**
-     * @description Handles resume selection and validates the uploaded PDF file.
+     * @description Validates and stores the uploaded resume PDF.
      */
-    const handleResumeChange = (e) => {
-        const file = e.target.files[0];
+    const handleResumeChange = (event) => {
+        const file = event.target.files?.[0];
 
         if (!file) {
             setResumeFile(null);
@@ -27,14 +32,14 @@ const Home = () => {
         if (file.type !== "application/pdf") {
             setError("Please upload your resume in PDF format.");
             setResumeFile(null);
-            e.target.value = "";
+            event.target.value = "";
             return;
         }
 
         if (file.size > 5 * 1024 * 1024) {
-            setError("Resume file size must not exceed 5 MB.");
+            setError("Resume size should not exceed 5 MB.");
             setResumeFile(null);
-            e.target.value = "";
+            event.target.value = "";
             return;
         }
 
@@ -43,26 +48,24 @@ const Home = () => {
     };
 
     /**
-     * @description Generates an interview report and navigates to its unique report URL.
+     * @description Validates the form, generates an AI interview report,
+     * and navigates to the generated report.
      */
-    const handleGenerateReport = async (e) => {
-        e.preventDefault();
+    const handleGenerateReport = async () => {
         setError("");
-
-        if (loading) return;
 
         if (!jobDescription.trim()) {
             setError("Please enter the job description.");
             return;
         }
 
-        if (!resumeFile) {
-            setError("Please upload your resume in PDF format.");
+        if (!selfDescription.trim()) {
+            setError("Please enter your self description.");
             return;
         }
 
-        if (!selfDescription.trim()) {
-            setError("Please enter your self-description.");
+        if (!resumeFile) {
+            setError("Please upload your resume.");
             return;
         }
 
@@ -77,156 +80,127 @@ const Home = () => {
 
             if (!interviewId) {
                 throw new Error(
-                    "Interview report ID was not returned by the server."
+                    "The generated report ID was not returned."
                 );
             }
 
             navigate(`/interview/${interviewId}`);
-        } catch (error) {
-            console.error("Interview report generation failed:", error);
-
+        } catch (err) {
             setError(
-                error.response?.data?.message ||
-                error.message ||
-                "Unable to generate your interview report. Please try again."
+                err.response?.data?.message ||
+                err.message ||
+                "Something went wrong while generating your report."
             );
         }
     };
 
     return (
-        <main className="home" aria-busy={loading}>
-            {loading && (
-                <div className="generation-overlay" role="status" aria-live="polite">
-                    <div className="generation-card">
-                        <div className="generation-spinner">
-                            <span></span>
-                        </div>
-
-                        <span className="generation-eyebrow">
-                            PREPLIX.AI
-                        </span>
-
-                        <h2>Preparing your interview report</h2>
-
-                        <p>
-                            Analysing your resume, understanding your profile
-                            and generating a personalised preparation plan.
-                        </p>
-
-                        <div className="generation-progress">
-                            <span></span>
-                        </div>
-
-                        <span className="generation-note">
-                            This may take a few moments. Please don't close this page.
-                        </span>
-                    </div>
-                </div>
-            )}
-
+        <main className="home">
             <div className="home-container">
-                {/* Brand header */}
+
                 <header className="home-header">
                     <div className="brand-name">
                         Preplix<span>.ai</span>
                     </div>
 
-                    <div className="brand-tagline">
-                        Turn your potential
+                    <h1 className="brand-tagline">
+                        Prepare smarter.
                         <br />
-                        into <span>advantage.</span>
-                    </div>
+                        <span>Stand out.</span>
+                    </h1>
 
                     <p className="header-description">
-                        AI-powered interview preparation designed to understand
-                        your profile, decode opportunities, and help you present
-                        your best self.
+                        Turn your resume and career goals into a personalised
+                        interview preparation experience powered by AI.
                     </p>
 
-                    <div className="brand-caption">
-                        PREPARE SMARTER. STAND OUT.
-                    </div>
+                    <span className="brand-caption">
+                        YOUR AI-POWERED INTERVIEW PREPARATION PARTNER
+                    </span>
                 </header>
 
-                {/* Interview form */}
-                <form
-                    className="interview-input-group"
-                    onSubmit={handleGenerateReport}
-                >
-                    {/* Job description */}
-                    <section className="input-card job-card">
+                <section className="interview-input-group">
+
+                    <div className="input-card">
                         <div className="card-heading">
                             <div className="heading-icon">
                                 <span>01</span>
                             </div>
 
                             <div>
-                                <h2>Job description</h2>
-                                <p>Tell us about the role you're targeting.</p>
+                                <h2>Job Description</h2>
+                                <p>
+                                    Tell us about the role you're targeting.
+                                </p>
                             </div>
                         </div>
 
-                        <textarea
-                            name="jobDescription"
-                            id="jobDescription"
-                            placeholder="Paste the job description here..."
-                            value={jobDescription}
-                            onChange={(e) => setJobDescription(e.target.value)}
-                            required
-                        />
+                        <div className="input-group">
+                            <label htmlFor="job-description">
+                                Target Job Description
+                            </label>
 
-                        <span className="input-caption">
-                            Include responsibilities, qualifications and requirements.
-                        </span>
-                    </section>
+                            <textarea
+                                id="job-description"
+                                placeholder="Paste the complete job description here..."
+                                value={jobDescription}
+                                onChange={(event) =>
+                                    setJobDescription(event.target.value)
+                                }
+                            />
 
-                    {/* User profile */}
-                    <section className="input-card profile-card">
+                            <span className="input-caption">
+                                Include responsibilities, requirements,
+                                qualifications and preferred skills.
+                            </span>
+                        </div>
+                    </div>
+
+                    <div className="input-card">
                         <div className="card-heading">
                             <div className="heading-icon">
                                 <span>02</span>
                             </div>
 
                             <div>
-                                <h2>Your profile</h2>
-                                <p>Help us understand your professional background.</p>
+                                <h2>Your Profile</h2>
+                                <p>
+                                    Share your background and experience.
+                                </p>
                             </div>
                         </div>
 
-                        {/* Resume upload */}
                         <div className="input-group">
-                            <label htmlFor="resume">
-                                Upload your resume
+                            <label htmlFor="resume-upload">
+                                Upload Your Resume
                             </label>
 
                             <div className="upload-area">
                                 <input
+                                    id="resume-upload"
                                     type="file"
-                                    name="resume"
-                                    id="resume"
                                     accept=".pdf,application/pdf"
                                     onChange={handleResumeChange}
-                                    disabled={loading}
                                 />
 
                                 <label
-                                    htmlFor="resume"
+                                    htmlFor="resume-upload"
                                     className="upload-content"
                                 >
                                     <div className="upload-icon">
                                         <svg
-                                            width="26"
-                                            height="26"
+                                            width="22"
+                                            height="22"
                                             viewBox="0 0 24 24"
                                             fill="none"
                                             stroke="currentColor"
-                                            strokeWidth="1.6"
+                                            strokeWidth="1.8"
                                             strokeLinecap="round"
                                             strokeLinejoin="round"
                                         >
                                             <path d="M12 16V4" />
                                             <path d="m7 9 5-5 5 5" />
-                                            <path d="M20 16.5v3A1.5 1.5 0 0 1 18.5 21h-13A1.5 1.5 0 0 1 4 19.5v-3" />
+                                            <path d="M20 16.5v2A2.5 2.5 0 0 1 17.5 21h-11A2.5 2.5 0 0 1 4 18.5v-2" />
                                         </svg>
                                     </div>
 
@@ -234,76 +208,74 @@ const Home = () => {
                                         <strong>
                                             {resumeFile
                                                 ? resumeFile.name
-                                                : "Choose a PDF file"}
+                                                : "Choose your resume"}
                                         </strong>
 
                                         <span>
-                                            {resumeFile
-                                                ? `${(resumeFile.size / (1024 * 1024)).toFixed(2)} MB`
-                                                : "Click to browse your files"}
+                                            PDF format · Maximum 5 MB
                                         </span>
                                     </div>
                                 </label>
                             </div>
-
-                            <span className="input-caption">
-                                Supported format: PDF (Maximum size: 5 MB)
-                            </span>
                         </div>
 
-                        {/* Self description */}
                         <div className="input-group self-description-group">
-                            <label htmlFor="selfDescription">
-                                Self description
+                            <label htmlFor="self-description">
+                                Self Description
                             </label>
 
                             <textarea
-                                name="selfDescription"
-                                id="selfDescription"
-                                placeholder="Describe your skills, experience, projects and career goals..."
+                                id="self-description"
+                                placeholder="Introduce yourself, your technical skills, projects, experience, achievements and career goals..."
                                 value={selfDescription}
-                                onChange={(e) => setSelfDescription(e.target.value)}
-                                required
+                                onChange={(event) =>
+                                    setSelfDescription(event.target.value)
+                                }
                             />
+
+                            <span className="input-caption">
+                                Describe your background, strengths and
+                                professional experience.
+                            </span>
                         </div>
 
-                        {/* Information hint */}
                         <div className="form-hint">
-                            <span className="hint-icon">✦</span>
+                            <span className="hint-icon">ⓘ</span>
 
                             <p>
-                                Use your resume and self-description together
-                                for the best results.
+                                Use your resume and self description together
+                                for the best results. This helps generate
+                                interview questions that better reflect your
+                                experience and skills.
                             </p>
                         </div>
 
-                        {/* Error message */}
                         {error && (
                             <div className="form-error" role="alert">
                                 {error}
                             </div>
                         )}
 
-                        {/* Generate report */}
                         <button
+                            type="button"
                             className="generate-btn"
-                            type="submit"
+                            onClick={handleGenerateReport}
                             disabled={loading}
                         >
                             <span>
                                 {loading
                                     ? "Generating your report..."
-                                    : "Generate interview report"}
+                                    : "Generate Interview Report"}
                             </span>
 
                             {!loading && (
                                 <svg
-                                    width="18"
-                                    height="18"
+                                    width="17"
+                                    height="17"
                                     viewBox="0 0 24 24"
                                     fill="none"
                                     stroke="currentColor"
-                                    strokeWidth="1.8"
+                                    strokeWidth="2"
                                     strokeLinecap="round"
                                     strokeLinejoin="round"
                                 >
@@ -314,16 +286,52 @@ const Home = () => {
                         </button>
 
                         <p className="privacy-note">
-                            Your career journey deserves a better beginning.
+                            Your information is securely processed to
+                            generate your personalised interview report.
                         </p>
-                    </section>
-                </form>
+                    </div>
 
-                {/* Footer */}
+                </section>
+
                 <footer className="home-footer">
-                    <span>Designed for your next big opportunity.</span>
+                    <span>
+                        © 2026 Preplix.ai · Prepare smarter. Stand out.
+                    </span>
                 </footer>
+
             </div>
+
+            {loading && (
+                <div
+                    className="generation-overlay"
+                    role="status"
+                    aria-live="polite"
+                >
+                    <div className="generation-card">
+                        <div className="generation-spinner"></div>
+
+                        <span className="generation-eyebrow">
+                            PREPLIX.AI
+                        </span>
+
+                        <h2>Preparing your interview report</h2>
+
+                        <p>
+                            Analysing your resume, evaluating your skills
+                            and generating personalised interview questions.
+                        </p>
+
+                        <div className="generation-progress">
+                            <span></span>
+                        </div>
+
+                        <span className="generation-note">
+                            This may take a few moments. Please don't
+                            close or refresh this page.
+                        </span>
+                    </div>
+                </div>
+            )}
         </main>
     );
 };
