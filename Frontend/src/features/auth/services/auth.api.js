@@ -1,55 +1,73 @@
-import axios from 'axios'
+
+import axios from "axios";
 
 const api = axios.create({
-    baseURL: 'http://localhost:3000',
+    baseURL: "http://localhost:3000",
     withCredentials: true
-})
+});
 
-export async function register({ username, email, password }) {
-
-    try{
-    
-        const response = await api.post('/api/auth/register', {
-            username, email, password
-        })
-
-        return response.data
-
-    } catch (err){
-            console.log(err)
-    }
-}
-
-export async function login({ email, password }) {
+/**
+ * @description Registers a new user account.
+ */
+export const register = async ({ username, email, password }) => {
     try {
-        const response = await api.post('/api/auth/login', {
+        const response = await api.post("/api/auth/register", {
+            username,
             email,
             password
-        })
+        });
 
         return response.data;
-    } catch (err) {
-        console.log(err);
-        throw err;
-    }
-}
 
-export async function logout() {
+    } catch (error) {
+        console.error("Registration API failed:", error);
+        throw error;
+    }
+};
+
+/**
+ * @description Authenticates an existing user.
+ */
+export const login = async ({ email, password }) => {
     try {
-        const response = await api.get('/api/auth/logout');
-        return response.data;
-    } catch (err) {
-        console.log(err);
-        throw err;
-    }
-}
+        const response = await api.post("/api/auth/login", {
+            email,
+            password
+        });
 
-export async function getMe() {
-    try {
-        const response = await api.get('/api/auth/get-me');
         return response.data;
-    } catch (err) {
-        console.log(err);
-            throw err;
+
+    } catch (error) {
+        console.error("Login API failed:", error);
+        throw error;
     }
-}
+};
+
+/**
+ * @description Logs out the currently authenticated user.
+ */
+export const logout = async () => {
+    try {
+        const response = await api.get("/api/auth/logout");
+
+        return response.data;
+
+    } catch (error) {
+        console.error("Logout API failed:", error);
+        throw error;
+    }
+};
+
+/**
+ * @description Retrieves the currently authenticated user's information.
+ */
+export const getMe = async () => {
+    try {
+        const response = await api.get("/api/auth/get-me");
+
+        return response.data;
+
+    } catch (error) {
+        throw error;
+    }
+};

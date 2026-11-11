@@ -1,63 +1,163 @@
-import react from 'react'
-import { useState } from 'react';
-import { useNavigate,Link } from 'react-router'
-import { useAuth } from '../hooks/useAuth';
+
+import { useState } from "react";
+import { Link, useNavigate } from "react-router";
+import { useAuth } from "../hooks/useAuth";
+import "../auth.form.scss";
 
 const Register = () => {
-  const navigate = useNavigate(); 
-  const [username, setUsername] = useState("")
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
+    const navigate = useNavigate();
+    const { loading, handleRegister } = useAuth();
 
-  const {loading,handleRegister} = useAuth()
+    const [username, setUsername] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
 
-  const handleSubmit = async (e) => { 
-    e.preventDefault()
-    await handleRegister({username,email,password})
-    navigate("/")
-    // Handle login logic here
-  }
+    /**
+     * @description Handles registration form submission and redirects the user after successful account creation.
+     */
+    const handleSubmit = async (e) => {
+        e.preventDefault();
 
-  if(loading){
-    return (<main><h1>Loading......</h1></main>)
-  }
+        try {
+            await handleRegister({
+                username,
+                email,
+                password
+            });
 
-  return (
-    <main>
-    <div classNAme="form-container">
-      <h1>Register</h1>
+            navigate("/");
+        } catch (error) {
+            console.error("Registration failed:", error);
+        }
+    };
 
-      <form onSubmit={handleSubmit} className="auth-form">
+    return (
+        <main className="auth-page">
+            <div className="auth-container">
 
-      <div className="input-group">
-        <label htmlFor="username">Username</label>
-        <input 
-        onChange = { (e)=>{setUsername(e.target.value) } }
-        type="text" name="username" id="username" placeholder="Enter Username" />
-      </div>
-      <div className="input-group">
-        <label htmlFor="email">Email</label>
-        <input 
-        onChange = { (e)=>{setEmail(e.target.value) } }
-        type="email" name="email" id="email" placeholder="Enter your email" />
-      </div>
-      <div className="input-group">
-        <label htmlFor="password">Password</label>
-        <input 
-        onChange = { (e)=>{setPassword(e.target.value) } }
-        type="password" name="password" id="password" placeholder="Enter your password" />
-      </div>
+                <header className="auth-header">
+                    <Link to="/" className="auth-brand">
+                        Preplix<span>.ai</span>
+                    </Link>
 
-      <button className= 'button primary-button'>Register</button>
+                    <span className="auth-caption">
+                        PREPARE SMARTER. STAND OUT.
+                    </span>
+                </header>
 
-      </form>
+                <section className="auth-card">
 
-        <p>Already have an account? <Link to="/Login" className="link">Login</Link></p> 
-    </div>
-  </main>
-  )
-}     
-    
-   
+                    <div className="auth-intro">
+                        <span className="auth-eyebrow">
+                            GET STARTED
+                        </span>
 
-export default Register
+                        <h1>
+                            Your next chapter
+                            <br />
+                            <span>starts here.</span>
+                        </h1>
+
+                        <p>
+                            Create your account and get a personalised
+                            interview preparation experience built around you.
+                        </p>
+                    </div>
+
+                    <form onSubmit={handleSubmit}>
+
+                        <div className="auth-input-group">
+                            <label htmlFor="username">
+                                Full name
+                            </label>
+
+                            <input
+                                type="text"
+                                id="username"
+                                name="username"
+                                placeholder="Enter your full name"
+                                value={username}
+                                onChange={(e) => setUsername(e.target.value)}
+                                required
+                            />
+                        </div>
+
+                        <div className="auth-input-group">
+                            <label htmlFor="email">
+                                Email address
+                            </label>
+
+                            <input
+                                type="email"
+                                id="email"
+                                name="email"
+                                placeholder="Enter your email address"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                required
+                            />
+                        </div>
+
+                        <div className="auth-input-group">
+                            <label htmlFor="password">
+                                Password
+                            </label>
+
+                            <input
+                                type="password"
+                                id="password"
+                                name="password"
+                                placeholder="Create a password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                required
+                            />
+                        </div>
+
+                        <button
+                            type="submit"
+                            className="auth-submit-btn"
+                            disabled={loading}
+                        >
+                            <span>
+                                {loading ? "Creating account..." : "Create account"}
+                            </span>
+
+                            {!loading && (
+                                <svg
+                                    width="18"
+                                    height="18"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    strokeWidth="1.8"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                >
+                                    <path d="M5 12h14" />
+                                    <path d="m12 5 7 7-7 7" />
+                                </svg>
+                            )}
+                        </button>
+
+                    </form>
+
+                    <div className="auth-switch">
+                        <p>
+                            Already have an account?
+                            <Link to="/login"> Sign in</Link>
+                        </p>
+                    </div>
+
+                </section>
+
+                <footer className="auth-footer">
+                    Designed for your next big opportunity.
+                </footer>
+
+            </div>
+        </main>
+    );
+};
+
+export default Register;
