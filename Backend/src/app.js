@@ -28,4 +28,11 @@ const interviewRouter = require('./routes/interview.routes')
 app.use('/api/auth', authRouter)
 app.use('/api/interview', interviewRouter)
 
+app.get('/healthz', (req, res) => {
+    res.status(200).json({
+        status: 'OK',
+        message: 'Preplix.ai backend is running'
+    });
+});
+
 module.exports = app
